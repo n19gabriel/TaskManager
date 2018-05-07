@@ -28,7 +28,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="16dp"
-        android:src="@mipmap/ic_add_white_48dp" />
+        android:src="@mipmap/ic_add_white_48dp"
+        android:background="@drawable/button_selector_effect"/>
 
 
 </RelativeLayout>

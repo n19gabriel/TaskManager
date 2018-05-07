@@ -1,7 +1,6 @@
-package com.example.gabriel.taskmanager.activity.new_task_activity;
+package com.example.gabriel.taskmanager.activity.change_task_activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -12,13 +11,10 @@ import android.widget.Toast;
 
 import com.example.gabriel.taskmanager.R;
 import com.example.gabriel.taskmanager.model.Task;
-import com.example.gabriel.taskmanager.utils.Utils;
-
-import org.json.JSONException;
 
 import java.util.ArrayList;
 
-public class NewTaskActivity extends AppCompatActivity {
+public class ChangeTaskActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private EditText mTaskNameET;
@@ -26,8 +22,7 @@ public class NewTaskActivity extends AppCompatActivity {
     private Button mAddNewTaskBT;
     private Button mExitBT;
     private ArrayList<Task> mTasks;
-    private Utils mUtils;
-    private SharedPreferences sharedPreferences;
+    private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +33,7 @@ public class NewTaskActivity extends AppCompatActivity {
         mAddNewTaskBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addTask();
+                ChangeTask();
             }
         });
 
@@ -56,38 +51,27 @@ public class NewTaskActivity extends AppCompatActivity {
         mTaskNameET = findViewById(R.id.task_name_et);
         mTaskCommitET = findViewById(R.id.task_Commit_et);
         mAddNewTaskBT = findViewById(R.id.add_new_task_bt);
+        mAddNewTaskBT.setText("Change");
         mExitBT = findViewById(R.id.exit_bt);
         mTasks = new ArrayList<>();
-        mUtils = new Utils();
-        sharedPreferences = getSharedPreferences("ListTask", MODE_PRIVATE);
 
         mTasks = getIntent().getParcelableArrayListExtra("Tasks");
-        //try {
-        //    mTasks = mUtils.loadListTask(sharedPreferences);
-        //} catch (JSONException e) {
-        //    e.printStackTrace();
-        //}
+        position = getIntent().getIntExtra("position",0);
     }
-    private void addTask(){
+    private void ChangeTask(){
         String name = mTaskNameET.getText().toString().trim();
         String commit = mTaskCommitET.getText().toString().trim();
         if(!name.isEmpty() && !commit.isEmpty() ) {
-            mTasks.add(new Task(name, commit));
-            mTaskNameET.setText("");
-            mTaskCommitET.setText("");
-        }else{
-                Toast.makeText(this, "Fill the space", Toast.LENGTH_SHORT).show();
-            }
+            mTasks.get(position).setName(name);
+            mTasks.get(position).setCommit(commit);
+        }
+        else{
+            Toast.makeText(this, "Fill the space", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void putIntent(){
         Intent intent = new Intent();
-        mUtils.saveListTask(mTasks,sharedPreferences);
-        //try {
-        //    mTasks = mUtils.loadListTask(sharedPreferences);
-        //} catch (JSONException e) {
-        //    e.printStackTrace();
-        //}
         intent.putParcelableArrayListExtra("Tasks", mTasks);
         setResult(RESULT_OK, intent);
         finish();

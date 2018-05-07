@@ -6,6 +6,10 @@ import android.os.Parcelable;
 public class Task implements Parcelable {
     private String mName;
     private String mCommit;
+    private String mStartDate;
+    private String mDeadline;
+    private String mExecutionTime;
+
 
     public Task() {
     }
@@ -18,6 +22,9 @@ public class Task implements Parcelable {
     protected Task(Parcel in) {
         mName = in.readString();
         mCommit = in.readString();
+        mStartDate = in.readString();
+        mDeadline = in.readString();
+        mExecutionTime = in.readString();
     }
 
     public String getName() {
@@ -34,6 +41,30 @@ public class Task implements Parcelable {
 
     public void setCommit(String mCommit) {
         this.mCommit = mCommit;
+    }
+
+    public String getStartDate() {
+        return mStartDate;
+    }
+
+    public void setStartDate(String mStartDate) {
+        this.mStartDate = mStartDate;
+    }
+
+    public String getDeadLine() {
+        return mDeadline;
+    }
+
+    public void setDeadLine(String mDeadline) {
+        this.mDeadline = mDeadline;
+    }
+
+    public String getExecutionTime() {
+        return mExecutionTime;
+    }
+
+    public void setExecutionTime(String mExecutionTime) {
+        this.mExecutionTime = mExecutionTime;
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {
@@ -57,5 +88,8 @@ public class Task implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mName);
         dest.writeString(mCommit);
+        dest.writeString(mStartDate);
+        dest.writeString(mDeadline);
+        dest.writeString(mExecutionTime);
     }
 }
