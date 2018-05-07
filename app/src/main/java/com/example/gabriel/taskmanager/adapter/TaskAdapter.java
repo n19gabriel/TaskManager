@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.gabriel.taskmanager.R;
@@ -17,35 +18,52 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         super(context, 0, offices);
     }
 
+    static class ViewHolder {
+        public TextView nameTaskTV;
+        public TextView commitTaskTV;
+        public TextView startDateTV;
+        public TextView endDateTV;
+        public TextView executionTimeTV;
+    }
+
     public View getView(int position, View convertView, ViewGroup parent) {
         // Check if an existing view is being reused, otherwise inflate the view
         View listItemView = convertView;
+        ViewHolder holder;
         if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
                     R.layout.task_item, parent, false);
+            holder = new ViewHolder();
+            holder.nameTaskTV = listItemView.findViewById(R.id.name_task_tv);
+            holder.commitTaskTV = listItemView.findViewById(R.id.commit_task_tv);
+            holder.startDateTV = listItemView.findViewById(R.id.start_date_tv);
+            holder.endDateTV = listItemView.findViewById(R.id.deadline_tv);
+            holder.executionTimeTV = listItemView.findViewById(R.id.execution_time_tv);
+            listItemView.setTag(holder);
+
+        }else {
+            holder = (ViewHolder) listItemView.getTag();
         }
 
         Task currentTask = getItem(position);
 
-        TextView nameTaskTV = listItemView.findViewById(R.id.name_task_tv);
+        holder.nameTaskTV.setText(currentTask.getName());
 
-        nameTaskTV.setText(currentTask.getName());
+        holder.commitTaskTV.setText(currentTask.getCommit());
 
-        TextView commitTaskTV = listItemView.findViewById(R.id.commit_task_tv);
+        holder.startDateTV.setText(currentTask.getStartDate());
 
-        commitTaskTV.setText(currentTask.getCommit());
+        holder.endDateTV.setText(currentTask.getDeadLine());
 
-        TextView startDateTV = listItemView.findViewById(R.id.start_date_tv);
+        holder.executionTimeTV.setText(currentTask.getExecutionTime());
 
-        startDateTV.setText(currentTask.getStartDate());
-
-        TextView endDateTV = listItemView.findViewById(R.id.deadline_tv);
-
-        endDateTV.setText(currentTask.getDeadLine());
-
-        TextView executionTimeTV = listItemView.findViewById(R.id.execution_time_tv);
-
-        executionTimeTV.setText(currentTask.getExecutionTime());
+        if(currentTask.getStartDate()==null){
+            listItemView.setBackgroundResource(R.color.light_grin);
+        }else if(currentTask.getDeadLine()!=null){
+            listItemView.setBackgroundResource(R.color.red);
+        }else {
+            listItemView.setBackgroundResource(R.color.orange);
+        }
 
         return listItemView;
     }
