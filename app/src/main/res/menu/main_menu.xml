@@ -9,5 +9,10 @@
         android:title="Settings"
         android:icon="@color/white"
         app:showAsAction="never" />
-   
+
+    <item
+        android:id="@+id/action_edit"
+        android:title="kek"
+        android:icon="@mipmap/ic_format_align_right_white_36dp" />
+
 </menu>

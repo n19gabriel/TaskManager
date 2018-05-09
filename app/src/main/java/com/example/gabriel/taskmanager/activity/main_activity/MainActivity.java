@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
     private void initialization(){
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle(R.string.Current_tasks);
 
 
         simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");

@@ -19,6 +19,14 @@ public class Task implements Parcelable {
         this.mCommit = mCommit;
     }
 
+    public Task(String mName, String mCommit, String mStartDate, String mDeadline, String mExecutionTime) {
+        this.mName = mName;
+        this.mCommit = mCommit;
+        this.mStartDate = mStartDate;
+        this.mDeadline = mDeadline;
+        this.mExecutionTime = mExecutionTime;
+    }
+
     protected Task(Parcel in) {
         mName = in.readString();
         mCommit = in.readString();
@@ -65,6 +73,16 @@ public class Task implements Parcelable {
 
     public void setExecutionTime(String mExecutionTime) {
         this.mExecutionTime = mExecutionTime;
+    }
+
+    @Override
+    public String toString() {
+        //return super.toString();
+        return "mName:"+this.mName+"," +
+                "mCommit:"+this.mCommit+"," +
+                "mStartDate:"+this.mStartDate+"," +
+                "mDeadline:"+this.mDeadline+"," +
+                "mExecutionTime:"+this.mExecutionTime;
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {
