@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.gabriel.taskmanager.R;
 import com.example.gabriel.taskmanager.activity.main_activity.MainActivity;
+import com.example.gabriel.taskmanager.data.TaskLab;
 import com.example.gabriel.taskmanager.model.Task;
 import com.example.gabriel.taskmanager.utils.Utils;
 
@@ -28,9 +29,9 @@ public class NewTaskActivity extends AppCompatActivity {
     private EditText mTaskCommitET;
     private Button mAddNewTaskBT;
     private Button mExitBT;
-    private ArrayList<Task> mTasks;
-    private Utils mUtils;
-    private SharedPreferences sharedPreferences;
+    //private ArrayList<Task> mTasks;
+    //private Utils mUtils;
+    //private SharedPreferences sharedPreferences;
 
     EditText test;
     Button save;
@@ -65,13 +66,13 @@ public class NewTaskActivity extends AppCompatActivity {
         });
 
 
-        load.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String text = mUtils.load(sharedPreferences);
-                test.setText(text);
-            }
-        });
+        //load.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+        //        String text = mUtils.load(sharedPreferences);
+        //        test.setText(text);
+        //    }
+        //});
     }
     private void initialization() throws JSONException {
         mToolbar = findViewById(R.id.toolbar);
@@ -85,20 +86,20 @@ public class NewTaskActivity extends AppCompatActivity {
         mTaskCommitET = findViewById(R.id.task_Commit_et);
         mAddNewTaskBT = findViewById(R.id.add_new_task_bt);
         mExitBT = findViewById(R.id.exit_bt);
-        mTasks = new ArrayList<>();
-        mUtils = new Utils();
-        sharedPreferences = getPreferences( MODE_PRIVATE);
-        Log.i("lol", "lol");
-
+        //mTasks = new ArrayList<>();
+        //mUtils = new Utils();
+        //sharedPreferences = getPreferences( MODE_PRIVATE);
         //mTasks = getIntent().getParcelableArrayListExtra("Tasks");
-        mTasks = mUtils.loadListTask(sharedPreferences);
-        Toast.makeText(NewTaskActivity.this, mTasks.get(0).getName(), Toast.LENGTH_SHORT).show();
+        //mTasks = mUtils.loadListTask(sharedPreferences);
+        //Toast.makeText(NewTaskActivity.this, mTasks.get(0).getmName(), Toast.LENGTH_SHORT).show();
         }
+
     private void addTask(){
         String name = mTaskNameET.getText().toString().trim();
         String commit = mTaskCommitET.getText().toString().trim();
         if(!name.isEmpty() && !commit.isEmpty() ) {
-            mTasks.add(new Task(name, commit));
+            //mTasks.add(new Task(name, commit));
+            TaskLab.getTaskLab(NewTaskActivity.this).addTask(new Task(name,commit));
             mTaskNameET.setText("");
             mTaskCommitET.setText("");
         }else{
@@ -108,14 +109,14 @@ public class NewTaskActivity extends AppCompatActivity {
 
     private void putIntent() {
         Intent intent = new Intent();
-        mUtils.saveListTask(mTasks,sharedPreferences);
-        try {
-            mTasks = mUtils.loadListTask(sharedPreferences);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        intent.putParcelableArrayListExtra("Tasks", mTasks);
-        setResult(RESULT_OK, intent);
+        //mUtils.saveListTask(mTasks,sharedPreferences);
+        //try {
+        //    mTasks = mUtils.loadListTask(sharedPreferences);
+        //} catch (JSONException e) {
+        //    e.printStackTrace();
+        //}
+        //intent.putParcelableArrayListExtra("Tasks", mTasks);
+        //setResult(RESULT_OK, intent);
         finish();
     }
 }

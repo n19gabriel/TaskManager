@@ -1,7 +1,13 @@
 package com.example.gabriel.taskmanager.activity.main_activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -17,8 +23,12 @@ import com.example.gabriel.taskmanager.R;
 import com.example.gabriel.taskmanager.activity.change_task_activity.ChangeTaskActivity;
 import com.example.gabriel.taskmanager.activity.new_task_activity.NewTaskActivity;
 import com.example.gabriel.taskmanager.adapter.TaskAdapter;
+import com.example.gabriel.taskmanager.data.TaskLab;
 import com.example.gabriel.taskmanager.model.Task;
+import com.example.gabriel.taskmanager.utils.MenuUtils;
 import com.example.gabriel.taskmanager.utils.Utils;
+import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
+import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -29,7 +39,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
 
     private Toolbar mToolbar;
     private FloatingActionButton mNewTaskBT;
@@ -39,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private SimpleDateFormat simpleDateFormat;
     private SharedPreferences msSaredPreferences;
     private Utils mUtils;
+    private ContextMenuDialogFragment mContextMenu;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, NewTaskActivity.class);
-                intent.putParcelableArrayListExtra("Tasks", mTasks);
                 startActivityForResult(intent,1);
+
             }
         });
 
@@ -79,23 +91,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    private void initialization(){
-        mToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle(R.string.Current_tasks);
-
-
-        simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-
-        mNewTaskBT = findViewById(R.id.newTask_bt);
-        mTaskList = findViewById(R.id.task_list);
-        if(mTasks==null) {
-            mTasks = new ArrayList<>();
-            restartAdapter();
-        }
-
+        mContextMenu.setItemClickListener(new OnMenuItemClickListener() {
+            @Override
+            public void onMenuItemClick(View view, int i) {
+                switch (i) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -131,9 +143,28 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         if(id==R.id.action_settings) {
             Toast.makeText(this, "Settings clicked", Toast.LENGTH_SHORT).show();
+        }else if(id == R.id.menu_more) {
+            mContextMenu.show(fragmentManager,"tag");
+            return true;
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    private void initialization(){
+        //ToolBar
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle(R.string.Current_tasks);
+        mContextMenu = MenuUtils.setupMenu(this);
+        fragmentManager = getSupportFragmentManager();
+        //
+        mNewTaskBT = findViewById(R.id.newTask_bt);
+        mTaskList = findViewById(R.id.task_list);
+        //
+        mTasks = new ArrayList<>();
+        mTasks = TaskLab.getTaskLab(MainActivity.this).getTasks();
+        restartAdapter();
+        simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
     }
 
     private void restartAdapter(){
@@ -142,22 +173,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void actionStartEndTime(Task task) throws ParseException {
-        if(task.getStartDate()==null){
-            task.setStartDate(getDate());
+        if(task.getmStartDate()==null){
+            task.setmStartDate(getDate());
             restartAdapter();
-        }else if(task.getDeadLine()==null){
-            task.setDeadLine(getDate());
-            Date dateStart = simpleDateFormat.parse(task.getStartDate());
-            Date deadline = simpleDateFormat.parse(task.getDeadLine());
+        }else if(task.getmDeadline()==null){
+            task.setmDeadline(getDate());
+            Date dateStart = simpleDateFormat.parse(task.getmStartDate());
+            Date deadline = simpleDateFormat.parse(task.getmDeadline());
             long time =  deadline.getTime()-dateStart.getTime();
             long hour = time / 3600000;
             long minutes = (time % 3600000)/1000/60;
-            task.setExecutionTime(hour+":"+minutes);
+            task.setmExecutionTime(hour+":"+minutes);
             restartAdapter();
         }else{
-            task.setStartDate(null);
-            task.setDeadLine(null);
-            task.setExecutionTime(null);
+            task.setmStartDate(null);
+            task.setmDeadline(null);
+            task.setmExecutionTime(null);
             restartAdapter();
         }
     }
@@ -165,6 +196,8 @@ public class MainActivity extends AppCompatActivity {
     private String getDate(){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        return simpleDateFormat.format(calendar.getTime()).toString();
+        return simpleDateFormat.format(calendar.getTime());
     }
+
+
 }

@@ -47,19 +47,19 @@ public class TaskAdapter extends ArrayAdapter<Task> {
 
         Task currentTask = getItem(position);
 
-        holder.nameTaskTV.setText(currentTask.getName());
+        holder.nameTaskTV.setText(currentTask.getmName());
 
-        holder.commitTaskTV.setText(currentTask.getCommit());
+        holder.commitTaskTV.setText(currentTask.getmCommit());
 
-        holder.startDateTV.setText(currentTask.getStartDate());
+        holder.startDateTV.setText(currentTask.getmStartDate());
 
-        holder.endDateTV.setText(currentTask.getDeadLine());
+        holder.endDateTV.setText(currentTask.getmDeadline());
 
-        holder.executionTimeTV.setText(currentTask.getExecutionTime());
+        holder.executionTimeTV.setText(currentTask.getmExecutionTime());
 
-        if(currentTask.getStartDate()==null){
+        if(currentTask.getmStartDate()==null){
             listItemView.setBackgroundResource(R.color.light_grin);
-        }else if(currentTask.getDeadLine()!=null){
+        }else if(currentTask.getmDeadline()!=null){
             listItemView.setBackgroundResource(R.color.red);
         }else {
             listItemView.setBackgroundResource(R.color.orange);

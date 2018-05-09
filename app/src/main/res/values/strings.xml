@@ -8,4 +8,6 @@
     <string name="end">End</string>
     <string name="time">Time</string>
     <string name="Current_tasks">Current tasks</string>
+    <string name="menu_more">More</string>
+
 </resources>

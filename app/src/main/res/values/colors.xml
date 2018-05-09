@@ -12,4 +12,5 @@
     <color name="light_grin">#8BC34A</color>
     <color name="orange">#FF9800</color>
     <color name="red">#F44336</color>
+    <color name="colorListClicker">#EEEEEE</color>
 </resources>

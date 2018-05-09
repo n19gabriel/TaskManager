@@ -3,7 +3,10 @@ package com.example.gabriel.taskmanager.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.UUID;
+
 public class Task implements Parcelable {
+    private String mId;
     private String mName;
     private String mCommit;
     private String mStartDate;
@@ -15,6 +18,7 @@ public class Task implements Parcelable {
     }
 
     public Task(String mName, String mCommit) {
+        this.mId = UUID.randomUUID().toString();
         this.mName = mName;
         this.mCommit = mCommit;
     }
@@ -28,6 +32,7 @@ public class Task implements Parcelable {
     }
 
     protected Task(Parcel in) {
+        mId = in.readString();
         mName = in.readString();
         mCommit = in.readString();
         mStartDate = in.readString();
@@ -35,54 +40,62 @@ public class Task implements Parcelable {
         mExecutionTime = in.readString();
     }
 
-    public String getName() {
+    public String getmName() {
         return mName;
     }
 
-    public void setName(String mName) {
+    public String getmId() {
+        return mId;
+    }
+
+    public void setmId(String mId) {
+        this.mId = mId;
+    }
+
+    public void setmName(String mName) {
         this.mName = mName;
     }
 
-    public String getCommit() {
+    public String getmCommit() {
         return mCommit;
     }
 
-    public void setCommit(String mCommit) {
+    public void setmCommit(String mCommit) {
         this.mCommit = mCommit;
     }
 
-    public String getStartDate() {
+    public String getmStartDate() {
         return mStartDate;
     }
 
-    public void setStartDate(String mStartDate) {
+    public void setmStartDate(String mStartDate) {
         this.mStartDate = mStartDate;
     }
 
-    public String getDeadLine() {
+    public String getmDeadline() {
         return mDeadline;
     }
 
-    public void setDeadLine(String mDeadline) {
+    public void setmDeadline(String mDeadline) {
         this.mDeadline = mDeadline;
     }
 
-    public String getExecutionTime() {
+    public String getmExecutionTime() {
         return mExecutionTime;
     }
 
-    public void setExecutionTime(String mExecutionTime) {
+    public void setmExecutionTime(String mExecutionTime) {
         this.mExecutionTime = mExecutionTime;
     }
 
     @Override
     public String toString() {
-        //return super.toString();
-        return "mName:"+this.mName+"," +
-                "mCommit:"+this.mCommit+"," +
-                "mStartDate:"+this.mStartDate+"," +
-                "mDeadline:"+this.mDeadline+"," +
-                "mExecutionTime:"+this.mExecutionTime;
+        return super.toString();
+        //return "mName:"+this.mName+"," +
+        //        "mCommit:"+this.mCommit+"," +
+         //       "mStartDate:"+this.mStartDate+"," +
+         //       "mDeadline:"+this.mDeadline+"," +
+         //       "mExecutionTime:"+this.mExecutionTime;
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {
@@ -104,6 +117,7 @@ public class Task implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mId);
         dest.writeString(mName);
         dest.writeString(mCommit);
         dest.writeString(mStartDate);

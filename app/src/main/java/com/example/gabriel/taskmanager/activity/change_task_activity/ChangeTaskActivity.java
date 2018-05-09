@@ -62,8 +62,8 @@ public class ChangeTaskActivity extends AppCompatActivity {
         String name = mTaskNameET.getText().toString().trim();
         String commit = mTaskCommitET.getText().toString().trim();
         if(!name.isEmpty() && !commit.isEmpty() ) {
-            mTasks.get(position).setName(name);
-            mTasks.get(position).setCommit(commit);
+            mTasks.get(position).setmName(name);
+            mTasks.get(position).setmCommit(commit);
         }
         else{
             Toast.makeText(this, "Fill the space", Toast.LENGTH_SHORT).show();
