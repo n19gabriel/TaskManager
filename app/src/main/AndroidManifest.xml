@@ -11,13 +11,15 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activity.main_activity.MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action
+                    android:name="android.intent.action.MAIN"
+                    android:configChanges="orientation" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".activity.new_task_activity.NewTaskActivity" />
-        <activity android:name=".activity.change_task_activity.ChangeTaskActivity"></activity>
+        <activity android:name=".activity.settings_activity.SettingsActivity"></activity>
     </application>
 
 </manifest>

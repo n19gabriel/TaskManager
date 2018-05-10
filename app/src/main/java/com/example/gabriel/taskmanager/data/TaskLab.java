@@ -30,6 +30,14 @@ public class TaskLab {
         mDatabase.insert(TaskDBHelper.TaskDBTable.NAME_TABEL, null, values);
     }
 
+    public void updateTask(Task task) {
+        String uuidString = task.getmId();
+        ContentValues values = getContentValues(task);
+        mDatabase.update(TaskDBHelper.TaskDBTable.NAME_TABEL, values, TaskDBHelper.TaskDBTable.UUID + " = ?",
+                new String[]{uuidString});
+    }
+
+
     public void removeTask(String id) {
         mDatabase.delete(TaskDBHelper.TaskDBTable.NAME_TABEL,
                 TaskDBHelper.TaskDBTable.UUID + " = ?",
