@@ -12,7 +12,7 @@
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/toolbar"
+        layout="@layout/toolbar_main"
         style="@style/Toolbar"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:layout_width="match_parent"

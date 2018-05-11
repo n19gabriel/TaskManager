@@ -43,16 +43,16 @@ public class NewTaskActivity extends AppCompatActivity {
                 finishActivity();
             }
         });
-
     }
+
     private void initialization()  {
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         mTaskNameET = findViewById(R.id.task_name_et);
         mTaskCommitET = findViewById(R.id.task_Commit_et);
-        mAddNewTaskBT = findViewById(R.id.add_new_task_bt);
-        mExitBT = findViewById(R.id.exit_bt);
+        mAddNewTaskBT = mToolbar.findViewById(R.id.add_task_bt);
+        mExitBT = mToolbar.findViewById(R.id.exit_bt);
 
         mTask = getIntent().getParcelableExtra("Task");
         if(mTask != null){

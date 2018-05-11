@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/toolbar_add_or_change"
+    android:minHeight="?attr/actionBarSize"
+    android:background="@color/primary">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/add_task_bt"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:background="@drawable/button_selector_effect"
+            android:drawableLeft="@drawable/ic_check_white_24dp"
+            android:text="@string/add"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/white" />
+
+        <Button
+            android:id="@+id/exit_bt"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/button_selector_effect"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:drawableLeft="@drawable/ic_close"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:text="@string/exit"/>
+    </LinearLayout>
+</android.support.v7.widget.Toolbar>

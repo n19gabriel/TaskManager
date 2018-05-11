@@ -10,7 +10,7 @@
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/toolbar"
+        layout="@layout/toolbar_add_or_change"
         style="@style/Toolbar">
     </include>
 
@@ -46,33 +46,6 @@
             android:inputType="text"
             android:textColor="@color/primary_text"
             android:maxLines="3"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/add_new_task_bt"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/add"
-                android:background="@drawable/button_selector_effect"
-                android:layout_marginRight="16dp"
-                android:textColor="@color/white"/>
-
-            <Button
-                android:id="@+id/exit_bt"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/exit"
-                android:background="@drawable/button_selector_effect"
-                android:textColor="@color/white"/>
-
-        </LinearLayout>
     </LinearLayout>
     </ScrollView>
 </LinearLayout>
