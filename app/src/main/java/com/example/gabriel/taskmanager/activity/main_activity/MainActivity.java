@@ -2,20 +2,27 @@ package com.example.gabriel.taskmanager.activity.main_activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.gabriel.taskmanager.R;
 import com.example.gabriel.taskmanager.activity.new_task_activity.NewTaskActivity;
+import com.example.gabriel.taskmanager.adapter.RVTaskAdapter;
 import com.example.gabriel.taskmanager.adapter.TaskAdapter;
 import com.example.gabriel.taskmanager.data.TaskLab;
 import com.example.gabriel.taskmanager.model.Task;
@@ -36,15 +43,17 @@ public class MainActivity extends AppCompatActivity  {
 
     private Toolbar mToolbar;
     private FloatingActionButton mNewTaskBT;
-    private ListView mTaskList;
+    private RecyclerView mTaskList;
     private ArrayList<Task> mTasks;
-    private TaskAdapter mTaskAdapter;
+    //private TaskAdapter mTaskAdapter;
+    private RVTaskAdapter rvTaskAdapter;
     private SimpleDateFormat simpleDateFormat;
     private ContextMenuDialogFragment mContextMenuSort;
     private ContextMenuDialogFragment mContextMenu;
     private FragmentManager fragmentManager;
     private mAsyncTask asyncTask;
     private boolean mDialogDeleteAllStan;
+    private boolean twice;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +68,7 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
-        mTaskList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*mTaskList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Task task = mTasks.get(position);
@@ -69,9 +78,9 @@ public class MainActivity extends AppCompatActivity  {
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
 
-        mTaskList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        /*mTaskList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Task task = mTasks.get(position);
@@ -80,7 +89,7 @@ public class MainActivity extends AppCompatActivity  {
                 startActivityForResult(intent,1);
                 return false;
             }
-        });
+        });*/
 
         mContextMenuSort.setItemClickListener(new OnMenuItemClickListener() {
             @Override
@@ -151,6 +160,28 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     @Override
+    public void onBackPressed() {
+        if(twice){
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+            System.exit(0);
+        }
+        final RelativeLayout relativeLayout = findViewById(R.id.main_rl);
+        Snackbar.make(relativeLayout, "Please press BACK again to exit", Snackbar.LENGTH_LONG)
+                .show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                twice = false;
+            }
+        },3000);
+        twice = true;
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
         return true;
@@ -181,6 +212,8 @@ public class MainActivity extends AppCompatActivity  {
         //
         mNewTaskBT = findViewById(R.id.newTask_bt);
         mTaskList = findViewById(R.id.task_list);
+        mTaskList.setLayoutManager(new LinearLayoutManager(this));
+        mTaskList.setHasFixedSize(true);
         //
         mTasks = new ArrayList<>();
         asyncTask = new mAsyncTask();
@@ -190,8 +223,13 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     private void restartAdapter(){
-        mTaskAdapter = new TaskAdapter(MainActivity.this, mTasks);
-        mTaskList.setAdapter(mTaskAdapter);
+        //mTaskAdapter = new TaskAdapter(MainActivity.this, mTasks);
+        //mTaskList.setAdapter(mTaskAdapter);
+
+        rvTaskAdapter = new RVTaskAdapter(mTasks);
+        mTaskList.setAdapter(rvTaskAdapter);
+        //rvTaskAdapter.setItems(mTasks);
+
     }
 
     private void actionStartEndTime(Task task) throws ParseException {

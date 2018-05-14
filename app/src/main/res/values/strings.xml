@@ -23,5 +23,6 @@
     <string name="delete_all_tasks">You want to delete all notes?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="configure_interface">Configure the interface</string>
 
 </resources>
