@@ -1,0 +1,193 @@
+<com.daimajia.swipe.SwipeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:id="@+id/swipe"
+    app:leftEdgeSwipeOffset="0dp"
+    app:rightEdgeSwipeOffset="0dp"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:id="@+id/bottom_wraper"
+        android:layout_width="match_parent"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:layout_height="70dp">
+
+        <Button
+            android:layout_gravity="center_vertical"
+            android:id="@+id/change_task_b"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:background="@color/primary"
+            android:gravity="center"
+            android:drawableLeft="@drawable/ic_change_white_24dp"
+            android:text="@string/change"
+            android:textColor="#fff" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/white" />
+
+        <Button
+            android:layout_gravity="center_vertical"
+            android:id="@+id/delete_task_b"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:background="@color/primary"
+            android:drawableLeft="@drawable/ic_delete_all"
+            android:gravity="center"
+            android:text="@string/delete"
+            android:textColor="#fff"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackground"
+        android:elevation="5dp"
+        android:orientation="vertical"
+        android:padding="10dp">
+        <android.support.v7.widget.CardView
+            android:layout_margin="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cv_main">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/image"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_margin="10dp"
+                        app:civ_border_color="@color/primary"
+                        android:layout_gravity="center_vertical"
+                        android:src="@mipmap/ic_launcher_background"
+                        app:civ_border_width="2dp"/>
+
+                    <TextView
+                        android:id="@+id/name_task_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:textAppearance="?android:textAppearanceMedium"
+                        android:textColor="@color/primary_text"
+                        android:textStyle="bold"
+                        tools:text="@string/name" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/commit_task_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:gravity="top"
+                        android:textAppearance="?android:textAppearanceMedium"
+                        android:textColor="@color/secondary_text"
+                        tools:text="@string/commit" />
+                </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+                <ImageButton
+                    android:id="@+id/restart_bt"
+                    android:layout_margin="15dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_replay_white_24dp"
+                    android:background="@drawable/cercleshape"/>
+
+                <ImageButton
+                    android:id="@+id/start_finish_bt"
+                    android:layout_margin="15dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_event_note_white_24dp"
+                    android:background="@drawable/cercleshape"/>
+
+                <ImageButton
+                    android:id="@+id/pause_bt"
+                    android:layout_margin="15dp"
+                    android:layout_width="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_play_arrow_white_24dp"
+                    android:background="@drawable/cercleshape"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/date_LL"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:orientation="horizontal"
+                    android:layout_margin="10dp">
+
+                    <TextView
+                        android:id="@+id/start_date_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textAppearance="?android:textAppearanceMedium"
+                        android:textColor="@color/white"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="10sp"
+                        tools:text="@string/start" />
+
+                    <TextView
+                        android:id="@+id/execution_time_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
+                        android:textAppearance="?android:textAppearanceMedium"
+                        android:textColor="@color/white"
+                        tools:text="@string/time" />
+
+                    <TextView
+                        android:id="@+id/deadline_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textAppearance="?android:textAppearanceMedium"
+                        android:textColor="@color/white"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="10sp"
+                        tools:text="@string/end" />
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</com.daimajia.swipe.SwipeLayout>

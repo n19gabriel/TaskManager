@@ -15,15 +15,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.example.gabriel.taskmanager.R;
 import com.example.gabriel.taskmanager.activity.new_task_activity.NewTaskActivity;
 import com.example.gabriel.taskmanager.adapter.RVTaskAdapter;
-import com.example.gabriel.taskmanager.adapter.TaskAdapter;
 import com.example.gabriel.taskmanager.data.TaskLab;
 import com.example.gabriel.taskmanager.model.Task;
 import com.example.gabriel.taskmanager.utils.MenuUtils;
@@ -31,13 +27,9 @@ import com.example.gabriel.taskmanager.utils.MenuUtilsSort;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -45,9 +37,7 @@ public class MainActivity extends AppCompatActivity  {
     private FloatingActionButton mNewTaskBT;
     private RecyclerView mTaskList;
     private ArrayList<Task> mTasks;
-    //private TaskAdapter mTaskAdapter;
     private RVTaskAdapter rvTaskAdapter;
-    private SimpleDateFormat simpleDateFormat;
     private ContextMenuDialogFragment mContextMenuSort;
     private ContextMenuDialogFragment mContextMenu;
     private FragmentManager fragmentManager;
@@ -67,29 +57,6 @@ public class MainActivity extends AppCompatActivity  {
                 addNewTask();
             }
         });
-
-        /*mTaskList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Task task = mTasks.get(position);
-                try {
-                    actionStartEndTime(task);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        });*/
-
-        /*mTaskList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Task task = mTasks.get(position);
-                Intent intent = new Intent(MainActivity.this, NewTaskActivity.class);
-                intent.putExtra("Task", task);
-                startActivityForResult(intent,1);
-                return false;
-            }
-        });*/
 
         mContextMenuSort.setItemClickListener(new OnMenuItemClickListener() {
             @Override
@@ -134,6 +101,14 @@ public class MainActivity extends AppCompatActivity  {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        asyncTask = new mAsyncTask();
+        asyncTask.execute();
+
     }
 
     @Override
@@ -216,48 +191,11 @@ public class MainActivity extends AppCompatActivity  {
         mTaskList.setHasFixedSize(true);
         //
         mTasks = new ArrayList<>();
-        asyncTask = new mAsyncTask();
-        asyncTask.execute();
-        simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-
     }
 
     private void restartAdapter(){
-        //mTaskAdapter = new TaskAdapter(MainActivity.this, mTasks);
-        //mTaskList.setAdapter(mTaskAdapter);
-
-        rvTaskAdapter = new RVTaskAdapter(mTasks);
+        rvTaskAdapter = new RVTaskAdapter(MainActivity.this,mTasks);
         mTaskList.setAdapter(rvTaskAdapter);
-        //rvTaskAdapter.setItems(mTasks);
-
-    }
-
-    private void actionStartEndTime(Task task) throws ParseException {
-        if(task.getmStartDate()==null){
-            task.setmStartDate(getDate());
-            restartAdapter();
-        }else if(task.getmDeadline()==null){
-            task.setmDeadline(getDate());
-            Date dateStart = simpleDateFormat.parse(task.getmStartDate());
-            Date deadline = simpleDateFormat.parse(task.getmDeadline());
-            long time =  deadline.getTime()-dateStart.getTime();
-            long hour = time / 3600000;
-            long minutes = (time % 3600000)/1000/60;
-            task.setmExecutionTime(hour+":"+minutes);
-            restartAdapter();
-        }else{
-            task.setmStartDate(null);
-            task.setmDeadline(null);
-            task.setmExecutionTime(null);
-            restartAdapter();
-        }
-        TaskLab.getTaskLab(MainActivity.this).updateTask(task);
-    }
-
-    private String getDate(){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        return simpleDateFormat.format(calendar.getTime());
     }
 
     private void sortArrayTask(ArrayList<Task> tasks, int sortIndex){
