@@ -125,7 +125,7 @@
                     android:layout_height="40dp"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/ic_replay_white_24dp"
-                    android:background="@drawable/cercleshape"/>
+                    android:background="@drawable/button_item_task_selector"/>
 
                 <ImageButton
                     android:id="@+id/start_finish_bt"
@@ -133,7 +133,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ic_event_note_white_24dp"
-                    android:background="@drawable/cercleshape"/>
+                    android:background="@drawable/button_item_task_selector"/>
 
                 <ImageButton
                     android:id="@+id/pause_bt"
@@ -142,7 +142,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_height="40dp"
                     android:src="@drawable/ic_play_arrow_white_24dp"
-                    android:background="@drawable/cercleshape"/>
+                    android:background="@drawable/button_item_task_selector"/>
                 </LinearLayout>
 
                 <LinearLayout

@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 
 import com.example.gabriel.taskmanager.R;
 import com.example.gabriel.taskmanager.activity.new_task_activity.NewTaskActivity;
+import com.example.gabriel.taskmanager.activity.settings_activity.SettingsActivity;
 import com.example.gabriel.taskmanager.adapter.RVTaskAdapter;
 import com.example.gabriel.taskmanager.data.TaskLab;
 import com.example.gabriel.taskmanager.model.Task;
@@ -94,6 +95,8 @@ public class MainActivity extends AppCompatActivity  {
                         deleteAllTasks();
                         break;
                     case 4:
+                        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                        startActivity(intent);
                         break;
                     case 5:
                         finishActivity();

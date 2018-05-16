@@ -6,6 +6,7 @@
     tools:context=".activity.new_task_activity.NewTaskActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <include
@@ -19,42 +20,71 @@
         android:layout_height="match_parent">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp"
-        android:orientation="vertical">
-
-        <android.support.design.widget.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <EditText
-                android:id="@+id/task_name_et"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/name"
-                android:padding="18dp"
-                android:inputType="text"
-                android:layout_marginTop="100dp"
-                android:layout_gravity="center_vertical"
-                android:textColor="@color/primary_text"
-                android:maxLines="1"/>
-        </android.support.design.widget.TextInputLayout>
+                android:layout_height="wrap_content">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/task_Commit_et"
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/task_name_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="100dp"
+                        android:hint="@string/name"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:padding="18dp"
+                        android:textColor="@color/primary_text" />
+                </android.support.design.widget.TextInputLayout>
+
+                <ImageButton
+                    android:id="@+id/voice_name_bt"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:background="@color/white"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_mic_24dp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/commit"
-                android:padding="18dp"
-                android:inputType="text"
-                android:textColor="@color/primary_text"
-                android:maxLines="3"/>
-        </android.support.design.widget.TextInputLayout>
-    </LinearLayout>
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/task_Commit_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/commit"
+                        android:inputType="text"
+                        android:maxLines="3"
+                        android:padding="18dp"
+                        android:textColor="@color/primary_text" />
+                </android.support.design.widget.TextInputLayout>
+
+                <ImageButton
+                    android:id="@+id/voice_commit_bt"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:background="@color/white"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_mic_24dp"/>
+            </RelativeLayout>
+        </LinearLayout>
     </ScrollView>
 </LinearLayout>

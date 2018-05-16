@@ -29,7 +29,8 @@ dependencies {
     implementation 'com.github.Yalantis:Context-Menu.Android:1.0.8'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
-    compile "com.daimajia.swipelayout:library:1.2.0@aar"
+    implementation "com.daimajia.swipelayout:library:1.2.0@aar"
     implementation 'de.hdodenhof:circleimageview:2.1.0'
+    implementation 'com.github.yukuku:ambilwarna:2.0.1'
 
 }

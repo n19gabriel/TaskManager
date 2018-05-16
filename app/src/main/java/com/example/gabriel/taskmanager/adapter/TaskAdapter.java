@@ -32,7 +32,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         ViewHolder holder;
         if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.task_item, parent, false);
+                    R.layout.item_task, parent, false);
             holder = new ViewHolder();
             holder.nameTaskTV = listItemView.findViewById(R.id.name_task_tv);
             holder.commitTaskTV = listItemView.findViewById(R.id.commit_task_tv);
