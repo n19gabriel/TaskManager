@@ -39,6 +39,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity  {
     private SimpleDateFormat simpleDateFormat;
@@ -104,6 +105,7 @@ public class MainActivity extends AppCompatActivity  {
                         addNewTask();
                         break;
                     case 2:
+                        randomTask();
                         break;
                     case 3:
                         deleteAllTasks();
@@ -361,6 +363,19 @@ public class MainActivity extends AppCompatActivity  {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         return simpleDateFormat.format(calendar.getTime());
+    }
+
+    private void randomTask(){
+        for(int i = 0; i<=10; i++){
+            int a = (int) (Math.random()*(200+1)) - 100;
+            int b = (int) (Math.random()*(200+1)) - 100;
+            String name = ""+a;
+            String commit = ""+b;
+            Task task = new Task(name,commit);
+            mTasks.add(task);
+            TaskLab.getTaskLab(MainActivity.this).addTask(task);
+        }
+        restartAdapter();
     }
 
 }

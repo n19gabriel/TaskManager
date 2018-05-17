@@ -18,6 +18,7 @@ import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.interfaces.SwipeItemMangerInterface;
 import com.daimajia.swipe.util.Attributes;
 import com.example.gabriel.taskmanager.R;
+import com.example.gabriel.taskmanager.activity.main_activity.MainActivity;
 import com.example.gabriel.taskmanager.activity.new_task_activity.NewTaskActivity;
 import com.example.gabriel.taskmanager.alarm_manager.AlertReceiver;
 import com.example.gabriel.taskmanager.data.TaskLab;
@@ -248,7 +249,6 @@ public class RVTaskAdapter extends RecyclerView.Adapter<RVTaskAdapter.TaskViewHo
                 TaskLab.getTaskLab(context).updateTask(task);
                 deadlineTaskTV.setText(task.getmDeadline());
                 executionTaskTV.setText(task.getmExecutionTime());
-
             }else {
                 startFinishBT.setImageResource(R.drawable.ic_event_note_white_24dp);
                 restartBT.setVisibility(View.INVISIBLE);
@@ -274,7 +274,7 @@ public class RVTaskAdapter extends RecyclerView.Adapter<RVTaskAdapter.TaskViewHo
             if(task.getmStartDate()!=null){
                 pauseBT.setVisibility(View.INVISIBLE);
                 startFinishBT.setImageResource(R.drawable.ic_event_busy_white_24dp);
-                dateLL.setBackgroundResource(mDefaultColorStart);
+                dateLL.setBackgroundColor(mDefaultColorStart);
                 task.setmStartDate(getDate());
                 task.setmDeadline(null);
                 task.setmExecutionTime(null);
@@ -288,7 +288,7 @@ public class RVTaskAdapter extends RecyclerView.Adapter<RVTaskAdapter.TaskViewHo
             if(task.getmDeadline()!=null){
                 pauseBT.setVisibility(View.INVISIBLE);
                 startFinishBT.setImageResource(R.drawable.ic_event_busy_white_24dp);
-                dateLL.setBackgroundResource(mDefaultColorStart);
+                dateLL.setBackgroundColor(mDefaultColorStart);
                 task.setmDeadline(null);
                 task.setmExecutionTime(null);
                 deadlineTaskTV.setText(task.getmDeadline());
@@ -298,12 +298,12 @@ public class RVTaskAdapter extends RecyclerView.Adapter<RVTaskAdapter.TaskViewHo
         }
 
         private void startNotify(Task task) {
-           Long alertTime = new GregorianCalendar().getTimeInMillis()+60*60*1000;
-           Intent alerntIntent = new Intent(context, AlertReceiver.class);
-           AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-           alarmManager.set(AlarmManager.RTC_WAKEUP,alertTime,
-                   PendingIntent.getBroadcast(context,1, alerntIntent,
-                   PendingIntent.FLAG_UPDATE_CURRENT));
+            Long alertTime = new GregorianCalendar().getTimeInMillis()+60*60*1000;
+            Intent alerntIntent = new Intent(context, AlertReceiver.class);
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP,alertTime,
+                    PendingIntent.getBroadcast(context,1, alerntIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT));
         }
     }
 }

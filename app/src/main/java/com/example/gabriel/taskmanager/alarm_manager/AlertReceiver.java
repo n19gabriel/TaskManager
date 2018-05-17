@@ -13,7 +13,7 @@ import com.example.gabriel.taskmanager.activity.main_activity.MainActivity;
 public class AlertReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        createNotification(context, "Times Up", "5 seconds has Passed ", "Allert");
+        createNotification(context, "Times Up", "The task is over ", "Allert");
     }
 
     public void  createNotification(Context context, String msg, String msgText, String msgAlert){
