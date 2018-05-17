@@ -2,32 +2,26 @@ package com.example.gabriel.taskmanager.utils;
 
 import android.content.SharedPreferences;
 
-import com.example.gabriel.taskmanager.model.Task;
-
-import org.json.JSONException;
-
-import java.util.ArrayList;
-
 public class Utils {
-    private JSONhelper jsoNhelper;
-    public static final String APP_PREFERENCES = "TaskList";
-
-    public Utils() {
-        jsoNhelper = new JSONhelper();
-    }
-
-    public void saveListTask(ArrayList<Task> tasks, SharedPreferences sharedPreferences ){
+    public void saveSetings(SharedPreferences sharedPreferences, int value, String tag ){
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(APP_PREFERENCES, jsoNhelper.serialization(tasks));
+        editor.putInt(tag,value);
         editor.commit();
     }
 
-    public ArrayList<Task> loadListTask(SharedPreferences sharedPreferences ) throws JSONException {
-        return jsoNhelper.deserialization(sharedPreferences.getString(APP_PREFERENCES, ""));
+    public int loadSetings(SharedPreferences sharedPreferences, String tag){
+        int saveText = sharedPreferences.getInt(tag,0);
+        return saveText;
     }
 
-    public String load(SharedPreferences sharedPreferences ){
-        String saveText = sharedPreferences.getString(APP_PREFERENCES,"");
-        return saveText;
+    public void saveVisited(SharedPreferences sharedPreferences, boolean value, String tag ){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(tag,value);
+        editor.commit();
+    }
+
+    public boolean loadVisited(SharedPreferences sharedPreferences, String tag){
+        boolean hasVisited = sharedPreferences.getBoolean(tag,false);
+        return hasVisited;
     }
 }

@@ -1,5 +1,7 @@
 package com.example.gabriel.taskmanager.adapter;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -17,6 +19,7 @@ import com.daimajia.swipe.interfaces.SwipeItemMangerInterface;
 import com.daimajia.swipe.util.Attributes;
 import com.example.gabriel.taskmanager.R;
 import com.example.gabriel.taskmanager.activity.new_task_activity.NewTaskActivity;
+import com.example.gabriel.taskmanager.alarm_manager.AlertReceiver;
 import com.example.gabriel.taskmanager.data.TaskLab;
 import com.example.gabriel.taskmanager.model.Task;
 
@@ -25,16 +28,22 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class RVTaskAdapter extends RecyclerView.Adapter<RVTaskAdapter.TaskViewHolder> {
-
+    private int mDefaultColorNotStart;
+    private int mDefaultColorStart;
+    private int mDefaultColorFinish;
     private ArrayList<Task> taskArrayList;
     private Context context;
 
-    public RVTaskAdapter(Context context, ArrayList<Task> taskArrayList) {
+    public RVTaskAdapter(Context context, ArrayList<Task> taskArrayList,int mDefaultColorNotStart, int mDefaultColorStart, int mDefaultColorFinish) {
         this.context = context;
         this.taskArrayList = taskArrayList;
+        this.mDefaultColorNotStart = mDefaultColorNotStart;
+        this.mDefaultColorStart = mDefaultColorStart;
+        this.mDefaultColorFinish = mDefaultColorFinish;
     }
 
     @NonNull
@@ -71,8 +80,10 @@ public class RVTaskAdapter extends RecyclerView.Adapter<RVTaskAdapter.TaskViewHo
         private ImageButton pauseBT;
         private LinearLayout dateLL;
 
+
         public TaskViewHolder(View itemView) {
             super(itemView);
+
             simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
             swipeLayout = itemView.findViewById(R.id.swipe);
             nameTaskTV = itemView.findViewById(R.id.name_task_tv);
@@ -103,16 +114,16 @@ public class RVTaskAdapter extends RecyclerView.Adapter<RVTaskAdapter.TaskViewHo
                 restartBT.setVisibility(View.VISIBLE);
                 pauseBT.setVisibility(View.VISIBLE);
                 startFinishBT.setImageResource(R.drawable.ic_event_busy_white_24dp);
-                dateLL.setBackgroundResource(R.color.red);
+                dateLL.setBackgroundColor(mDefaultColorFinish);
             }else if(task.getmStartDate()!=null){
                 pauseBT.setVisibility(View.INVISIBLE);
                 startFinishBT.setImageResource(R.drawable.ic_event_available_white_24dp);
-                dateLL.setBackgroundResource(R.color.orange);
+                dateLL.setBackgroundColor(mDefaultColorStart);
             }else {
                 startFinishBT.setImageResource(R.drawable.ic_event_note_white_24dp);
                 restartBT.setVisibility(View.INVISIBLE);
                 pauseBT.setVisibility(View.INVISIBLE);
-                dateLL.setBackgroundResource(R.color.light_grin);
+                dateLL.setBackgroundColor(mDefaultColorNotStart);
             }
 
             deleteB.setOnClickListener(new View.OnClickListener() {
@@ -218,10 +229,11 @@ public class RVTaskAdapter extends RecyclerView.Adapter<RVTaskAdapter.TaskViewHo
             if(task.getmStartDate()==null){
                 restartBT.setVisibility(View.VISIBLE);
                 startFinishBT.setImageResource(R.drawable.ic_event_available_white_24dp);
-                dateLL.setBackgroundResource(R.color.orange);
+                dateLL.setBackgroundColor(mDefaultColorStart);
                 task.setmStartDate(getDate());
                 TaskLab.getTaskLab(context).updateTask(task);
                 startDateTaskTV.setText(task.getmStartDate());
+                startNotify(task);
             }else if(task.getmDeadline()==null){
                 pauseBT.setVisibility(View.VISIBLE);
                 startFinishBT.setImageResource(R.drawable.ic_event_busy_white_24dp);
@@ -232,10 +244,11 @@ public class RVTaskAdapter extends RecyclerView.Adapter<RVTaskAdapter.TaskViewHo
                 long hour = time / 3600000;
                 long minutes = (time % 3600000)/1000/60;
                 task.setmExecutionTime(hour+":"+minutes);
-                dateLL.setBackgroundResource(R.color.red);
+                dateLL.setBackgroundColor(mDefaultColorFinish);
                 TaskLab.getTaskLab(context).updateTask(task);
                 deadlineTaskTV.setText(task.getmDeadline());
                 executionTaskTV.setText(task.getmExecutionTime());
+
             }else {
                 startFinishBT.setImageResource(R.drawable.ic_event_note_white_24dp);
                 restartBT.setVisibility(View.INVISIBLE);
@@ -243,7 +256,7 @@ public class RVTaskAdapter extends RecyclerView.Adapter<RVTaskAdapter.TaskViewHo
                 task.setmStartDate(null);
                 task.setmDeadline(null);
                 task.setmExecutionTime(null);
-                dateLL.setBackgroundResource(R.color.light_grin);
+                dateLL.setBackgroundColor(mDefaultColorNotStart);
                 TaskLab.getTaskLab(context).updateTask(task);
                 startDateTaskTV.setText(task.getmStartDate());
                 deadlineTaskTV.setText(task.getmDeadline());
@@ -261,7 +274,7 @@ public class RVTaskAdapter extends RecyclerView.Adapter<RVTaskAdapter.TaskViewHo
             if(task.getmStartDate()!=null){
                 pauseBT.setVisibility(View.INVISIBLE);
                 startFinishBT.setImageResource(R.drawable.ic_event_busy_white_24dp);
-                dateLL.setBackgroundResource(R.color.orange);
+                dateLL.setBackgroundResource(mDefaultColorStart);
                 task.setmStartDate(getDate());
                 task.setmDeadline(null);
                 task.setmExecutionTime(null);
@@ -275,13 +288,22 @@ public class RVTaskAdapter extends RecyclerView.Adapter<RVTaskAdapter.TaskViewHo
             if(task.getmDeadline()!=null){
                 pauseBT.setVisibility(View.INVISIBLE);
                 startFinishBT.setImageResource(R.drawable.ic_event_busy_white_24dp);
-                dateLL.setBackgroundResource(R.color.orange);
+                dateLL.setBackgroundResource(mDefaultColorStart);
                 task.setmDeadline(null);
                 task.setmExecutionTime(null);
                 deadlineTaskTV.setText(task.getmDeadline());
                 executionTaskTV.setText(task.getmExecutionTime());
                 TaskLab.getTaskLab(context).updateTask(task);
             }
+        }
+
+        private void startNotify(Task task) {
+           Long alertTime = new GregorianCalendar().getTimeInMillis()+60*60*1000;
+           Intent alerntIntent = new Intent(context, AlertReceiver.class);
+           AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+           alarmManager.set(AlarmManager.RTC_WAKEUP,alertTime,
+                   PendingIntent.getBroadcast(context,1, alerntIntent,
+                   PendingIntent.FLAG_UPDATE_CURRENT));
         }
     }
 }

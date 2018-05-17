@@ -29,4 +29,6 @@
     <string name="colour_of_not_started_task">Colour of not started task</string>
     <string name="color_of_started_task">Color of started task</string>
     <string name="color_of_finish_task">Color of finish task</string>
+    <string name="additional_settings">Additional settings</string>
+    <string name="default_setting">Default setting</string>
 </resources>

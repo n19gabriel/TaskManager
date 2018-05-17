@@ -1,11 +1,14 @@
 package com.example.gabriel.taskmanager.activity.main_activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,15 +28,21 @@ import com.example.gabriel.taskmanager.data.TaskLab;
 import com.example.gabriel.taskmanager.model.Task;
 import com.example.gabriel.taskmanager.utils.MenuUtils;
 import com.example.gabriel.taskmanager.utils.MenuUtilsSort;
+import com.example.gabriel.taskmanager.utils.Utils;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity  {
-
+    private SimpleDateFormat simpleDateFormat;
+    public static final String APP_PREFERENCES = "mSettings";
     private Toolbar mToolbar;
     private FloatingActionButton mNewTaskBT;
     private RecyclerView mTaskList;
@@ -45,6 +54,11 @@ public class MainActivity extends AppCompatActivity  {
     private mAsyncTask asyncTask;
     private boolean mDialogDeleteAllStan;
     private boolean twice;
+    private Utils mUtils;
+    private SharedPreferences mSharedPreferences;
+    private int mDefaultColorNotStart;
+    private int mDefaultColorStart;
+    private int mDefaultColorFinish;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +125,16 @@ public class MainActivity extends AppCompatActivity  {
         super.onStart();
         asyncTask = new mAsyncTask();
         asyncTask.execute();
+
+        if(mSharedPreferences.contains("DEFAULT_COLOR_NOT_START")){
+            mDefaultColorNotStart = mUtils.loadSetings(mSharedPreferences,"DEFAULT_COLOR_NOT_START");
+        }
+        if(mSharedPreferences.contains("DEFAULT_COLOR_START")){
+            mDefaultColorStart = mUtils.loadSetings(mSharedPreferences,"DEFAULT_COLOR_START");
+        }
+        if(mSharedPreferences.contains("DEFAULT_COLOR_FINISH")){
+            mDefaultColorFinish = mUtils.loadSetings(mSharedPreferences,"DEFAULT_COLOR_FINISH");
+        }
 
     }
 
@@ -194,10 +218,26 @@ public class MainActivity extends AppCompatActivity  {
         mTaskList.setHasFixedSize(true);
         //
         mTasks = new ArrayList<>();
+        mUtils = new Utils();
+        mSharedPreferences = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+
+        simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        if (mSharedPreferences.contains("hasVisited")) {
+            boolean hasVisited = mUtils.loadVisited(mSharedPreferences, "hasVisited");
+            if (!hasVisited) {
+                mDefaultColorNotStart = ContextCompat.getColor(MainActivity.this, R.color.light_grin);
+                mDefaultColorStart = ContextCompat.getColor(MainActivity.this, R.color.orange);
+                mDefaultColorFinish = ContextCompat.getColor(MainActivity.this, R.color.red);
+                mUtils.saveVisited(mSharedPreferences, true, "hasVisited");
+                mUtils.saveSetings(mSharedPreferences, mDefaultColorNotStart, "DEFAULT_COLOR_NOT_START");
+                mUtils.saveSetings(mSharedPreferences, mDefaultColorStart, "DEFAULT_COLOR_START");
+                mUtils.saveSetings(mSharedPreferences, mDefaultColorFinish, "DEFAULT_COLOR_FINISH");
+            }
+        }
     }
 
     private void restartAdapter(){
-        rvTaskAdapter = new RVTaskAdapter(MainActivity.this,mTasks);
+        rvTaskAdapter = new RVTaskAdapter(MainActivity.this,mTasks, mDefaultColorNotStart,mDefaultColorStart, mDefaultColorFinish);
         mTaskList.setAdapter(rvTaskAdapter);
     }
 
@@ -285,6 +325,30 @@ public class MainActivity extends AppCompatActivity  {
         @Override
         protected Void doInBackground(Void... voids) {
             mTasks = TaskLab.getTaskLab(MainActivity.this).getTasks();
+            Date date = null;
+            try {
+                date = simpleDateFormat.parse(getDate());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            for(Task task:mTasks){
+                Date dateStart = null;
+                if(task.getmStartDate()!=null){
+                    try {
+                        dateStart = simpleDateFormat.parse(task.getmStartDate());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    long time =  date.getTime()-dateStart.getTime();
+                    if(time<=time+60*60*1000){
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(dateStart);
+                        cal.add(Calendar.SECOND, 2);
+                        task.setmDeadline(simpleDateFormat.format(cal.getTime()));
+                        TaskLab.getTaskLab(MainActivity.this).updateTask(task);
+                    }
+                }
+            }
             return null;
         }
         @Override
@@ -293,4 +357,10 @@ public class MainActivity extends AppCompatActivity  {
             super.onPostExecute(aVoid);
         }
     }
+    private String getDate(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        return simpleDateFormat.format(calendar.getTime());
+    }
+
 }

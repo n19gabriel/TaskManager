@@ -110,7 +110,8 @@ public class NewTaskActivity extends AppCompatActivity {
             mTask.setmCommit(commit);
             TaskLab.getTaskLab(NewTaskActivity.this).updateTask(mTask);
         }else if(!name.isEmpty() && !commit.isEmpty() ) {
-            TaskLab.getTaskLab(NewTaskActivity.this).addTask(new Task(name,commit));
+            Task task = new Task(name, commit);
+            TaskLab.getTaskLab(NewTaskActivity.this).addTask(task);
             mTaskNameET.setText("");
             mTaskCommitET.setText("");
         }else{

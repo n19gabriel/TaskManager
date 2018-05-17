@@ -7,6 +7,21 @@
     android:layout_height="match_parent"
     tools:context=".activity.settings_activity.SettingsActivity"
     android:orientation="vertical">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_main"
+        style="@style/Toolbar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:actionBarSize"
+        android:background="@color/primary">
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/statsSpin"
+            android:spinnerMode="dropdown"/>
+    </include>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -47,17 +62,13 @@
                             android:layout_marginLeft="15dp"
                             android:textColor="@color/primary_text"
                             android:text="@string/color_is_not_started_task" />
-                        <LinearLayout
+                            android:backgroundTintMode="@drawable/cercleshape">
+                        <TextView
+                            android:id="@+id/color_not_start_task_tv"
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             android:gravity="center_vertical"
-                            android:layout_marginRight="15dp"
-                            android:background="@drawable/cercleshape">
-                            <TextView
-                                android:id="@+id/color_not_start_task_tv"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"/>
-                        </LinearLayout>
+                            android:layout_marginRight="15dp"/>
 
                     </LinearLayout>
                     <View
@@ -83,8 +94,7 @@
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             android:gravity="center_vertical"
-                            android:layout_marginRight="15dp"
-                            android:background="@drawable/cercleshape"/>
+                            android:layout_marginRight="15dp"/>
                     </LinearLayout>
                     <View
                         android:layout_width="match_parent"
@@ -109,9 +119,36 @@
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             android:gravity="center_vertical"
-                            android:layout_marginRight="15dp"
-                            android:background="@drawable/cercleshape"/>
+                            android:layout_marginRight="15dp" />
                     </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/additional_settings"
+                android:gravity="center_vertical"
+                android:textColor="@color/secondary_text"
+                android:textSize="15sp"
+                android:layout_margin="10dp"/>
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cv_additional_settings"
+                android:layout_margin="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:id="@+id/default_setting">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="15dp"
+                    android:textColor="@color/primary_text"
+                    android:text="@string/default_setting" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
         </LinearLayout>
