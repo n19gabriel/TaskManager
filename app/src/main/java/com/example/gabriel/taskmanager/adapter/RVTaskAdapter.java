@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.example.gabriel.taskmanager.activity.main_activity.MainActivity;
 import com.example.gabriel.taskmanager.activity.new_task_activity.NewTaskActivity;
 import com.example.gabriel.taskmanager.alarm_manager.AlertReceiver;
 import com.example.gabriel.taskmanager.data.TaskLab;
+import com.example.gabriel.taskmanager.file_helper.FileHelper;
 import com.example.gabriel.taskmanager.model.Task;
 
 import java.text.ParseException;
@@ -31,6 +33,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RVTaskAdapter extends RecyclerView.Adapter<RVTaskAdapter.TaskViewHolder> {
     private int mDefaultColorNotStart;
@@ -57,7 +62,13 @@ public class RVTaskAdapter extends RecyclerView.Adapter<RVTaskAdapter.TaskViewHo
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
-        holder.bind(taskArrayList.get(position), position);
+        try {
+            holder.bind(taskArrayList.get(position), position);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -80,7 +91,8 @@ public class RVTaskAdapter extends RecyclerView.Adapter<RVTaskAdapter.TaskViewHo
         private ImageButton startFinishBT;
         private ImageButton pauseBT;
         private LinearLayout dateLL;
-
+        private CircleImageView circleImageView;
+        private FileHelper mFileHelper;
 
         public TaskViewHolder(View itemView) {
             super(itemView);
@@ -98,9 +110,11 @@ public class RVTaskAdapter extends RecyclerView.Adapter<RVTaskAdapter.TaskViewHo
             startFinishBT = itemView.findViewById(R.id.start_finish_bt);
             pauseBT = itemView.findViewById(R.id.pause_bt);
             dateLL = itemView.findViewById(R.id.date_LL);
+            circleImageView = itemView.findViewById(R.id.image);
+            mFileHelper = new FileHelper(context);
         }
 
-        public void bind(final Task task, final int position) {
+        public void bind(final Task task, final int position) throws ExecutionException, InterruptedException {
             nameTaskTV.setText(task.getmName());
 
             commitTaskTV.setText(task.getmCommit());
@@ -110,6 +124,12 @@ public class RVTaskAdapter extends RecyclerView.Adapter<RVTaskAdapter.TaskViewHo
             deadlineTaskTV.setText(task.getmDeadline());
 
             executionTaskTV.setText(task.getmExecutionTime());
+
+            Bitmap bitmap = mFileHelper.loadBitmap(task.getmName());
+
+            if (bitmap != null) {
+                circleImageView.setImageBitmap(mFileHelper.loadBitmap(task.getmName()));
+            }
 
             if(task.getmDeadline()!=null){
                 restartBT.setVisibility(View.VISIBLE);
@@ -133,54 +153,33 @@ public class RVTaskAdapter extends RecyclerView.Adapter<RVTaskAdapter.TaskViewHo
 
                     SwipeItemMangerInterface mItemManger = new SwipeItemMangerInterface() {
                         @Override
-                        public void openItem(int position) {
-
-                        }
-
+                        public void openItem(int position) { }
                         @Override
-                        public void closeItem(int position) {
-
-                        }
-
+                        public void closeItem(int position) { }
                         @Override
-                        public void closeAllExcept(SwipeLayout layout) {
-
-                        }
-
+                        public void closeAllExcept(SwipeLayout layout) { }
                         @Override
-                        public void closeAllItems() {
-
-                        }
-
+                        public void closeAllItems() { }
                         @Override
                         public List<Integer> getOpenItems() {
                             return null;
                         }
-
                         @Override
                         public List<SwipeLayout> getOpenLayouts() {
                             return null;
                         }
-
                         @Override
-                        public void removeShownLayouts(SwipeLayout layout) {
-
-                        }
-
+                        public void removeShownLayouts(SwipeLayout layout) { }
                         @Override
                         public boolean isOpen(int position) {
                             return false;
                         }
-
                         @Override
                         public Attributes.Mode getMode() {
                             return null;
                         }
-
                         @Override
-                        public void setMode(Attributes.Mode mode) {
-
-                        }
+                        public void setMode(Attributes.Mode mode) { }
                     };
                     mItemManger.removeShownLayouts(swipeLayout);
                     notifyItemRemoved(position);
